@@ -127,7 +127,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="dataScaler.cpp" />
+    <ClCompile Include="linearInterpolation.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="utils.cpp" />
+    <ClCompile Include="WAVEFileReader.cpp" />
+    <ClCompile Include="WAVEFileScaler.cpp" />
+    <ClCompile Include="WAVEFileWriter.cpp" />
+    <ClCompile Include="WAVEFileWriter.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="dataScaler.h" />
+    <ClInclude Include="linearInterpolation.h" />
+    <ClInclude Include="utils.h" />
+    <ClInclude Include="WAVEFIleScaler.h" />
+    <ClInclude Include="WAVEFormat.h" />
+    <ClInclude Include="WAVEFileReader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
