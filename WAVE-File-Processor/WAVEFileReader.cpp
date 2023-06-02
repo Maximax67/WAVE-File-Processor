@@ -22,12 +22,24 @@ void WAVEFileReader::readInfo() {
         throw std::exception("Error reading header");
     }
 
+    if (!WAVEFormatValidate::validateRIFFHeader(header)) {
+        throw std::exception("Invalid RIFF Header");
+    }
+
     if (!file.read(subch1Ptr, sizeof(FMT))) {
         throw std::exception("Error reading FMT");
     }
 
+    if (!WAVEFormatValidate::validateFMT(fmt)) {
+        throw std::exception("Invalid FMT chunk");
+    }
+
     if (!file.read(subch2Ptr, sizeof(DATACHUNKINFO))) {
         throw std::exception("Error reading data chunk info");
+    }
+
+    if (!WAVEFormatValidate::validateDataChunkInfo(dataChunkInfo)) {
+        throw std::exception("Invalid Data chunk");
     }
 }
 

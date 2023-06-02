@@ -135,6 +135,7 @@
     <ClCompile Include="WAVEFileScaler.cpp" />
     <ClCompile Include="WAVEFileWriter.cpp" />
     <ClCompile Include="WAVEFileWriter.h" />
+    <ClCompile Include="WAVEFormatValidate.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dataScaler.h" />
@@ -143,6 +144,7 @@
     <ClInclude Include="WAVEFIleScaler.h" />
     <ClInclude Include="WAVEFormat.h" />
     <ClInclude Include="WAVEFileReader.h" />
+    <ClInclude Include="WAVEFormatValidate.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

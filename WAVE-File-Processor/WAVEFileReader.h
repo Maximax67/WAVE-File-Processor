@@ -5,7 +5,7 @@
 #include <fstream>
 #include <vector>
 
-#include "WAVEFormat.h"
+#include "WAVEFormatValidate.h"
 
 class WAVEFileReader {
 private:
