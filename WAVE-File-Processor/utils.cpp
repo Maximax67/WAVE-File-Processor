@@ -11,7 +11,7 @@ bool utils::validateExtension(const std::string& filename, const std::string& ex
 
 bool utils::convertToDouble(const char* line, double* number) {
 	double n = atof(line);
-	if (n != 0 || line != "0") {
+	if (n != 0 || (n == 0 && line == "0")) {
 		*number = n;
 		return true;
 	}
@@ -30,7 +30,7 @@ bool utils::validateInputOutputFiles(const std::string& inputFile, const std::st
         was_error = true;
     }
     if (!utils::validateExtension(outputFile, waveExtension)) {
-        std::cout << "Invalid extension for output file: " << inputFile << std::endl;
+        std::cout << "Invalid extension for output file: " << outputFile << std::endl;
         was_error = true;
     }
 

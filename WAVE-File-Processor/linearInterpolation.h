@@ -9,7 +9,6 @@ private:
 	T currentSample;
 	T nextSample;
 public:
-	LinearInterpolation();
 	void setNewSamples(const T&, const T&, const int);
 	bool newSamplesNeeded(const double) const;
 	T getInterpolatedValue(const double) const;
