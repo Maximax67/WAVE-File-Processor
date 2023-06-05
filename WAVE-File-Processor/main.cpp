@@ -22,9 +22,14 @@ int main(int argc, char* argv[]) {
 
     if (utils::validateInputOutputFiles(inputFile, outputFile) && scaleRatio) {
         try {
-            WAVEFileScaler scale(inputFile, outputFile, scaleRatio);
+            WAVEFileScaler scaler;
+            scaler.setBufferSize(utils::defaultBufferSize);
+            scaler.scaleFile(inputFile, outputFile, scaleRatio);
         }
         catch (std::exception& e) {
+            std::cout << e.what() << std::endl;
+        }
+        catch (std::invalid_argument& e) {
             std::cout << e.what() << std::endl;
         }
     }

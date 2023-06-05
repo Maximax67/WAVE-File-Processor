@@ -1,27 +1,51 @@
 #include "WAVEFIleScaler.h"
 
-WAVEFileScaler::WAVEFileScaler(const std::string& input, const std::string& output, const double sr) {	
-	initReader(input);
-
-	RIFFHEADER header = reader->getHeader();
-	FMT fmt = reader->getFMT();
-	DATACHUNKINFO dci = reader->getDataChunkInfo();
-
-	int originalNumSamples = dci.Size / fmt.blockAlign;
-	int interpolatedNumSamples = (int)(originalNumSamples * sr);
-
-	dci.Size = interpolatedNumSamples * fmt.blockAlign;
-	header.chunkSize = 4 + (8 + sizeof(fmt)) + (8 + sizeof(DATACHUNKINFO) + dci.Size);
-	
-	initWriter(output, header, fmt, dci);
-
-	if (reader->getSampleSize() == 2) {
-		dataScaler<int16_t> ds(reader, writer, originalNumSamples, interpolatedNumSamples, sr);
-		ds.scaleData();
+void WAVEFileScaler::setBufferSize(const int new_size) {
+	if (new_size > 0) {
+		bufferSize = new_size;
 	}
 	else {
-		dataScaler<uint8_t> ds(reader, writer, originalNumSamples, interpolatedNumSamples, sr);
-		ds.scaleData();
+		throw std::invalid_argument("Buffer size can't be less than 0!");
+	}
+}
+
+void WAVEFileScaler::scaleFile(const std::string& input, const std::string& output, const double sr) {
+	if (!bufferSize) {
+		throw std::exception("Buffer size was not specified");
+	}
+
+	initReader(input);
+	
+	WAVEINFO info = reader->getInfo();
+	int originalNumSamples = info.dataChunkInfo.Size / (info.fmt.bitsPerSample / 8);
+	int interpolatedNumSamples = (int)(originalNumSamples * sr);
+	
+	info.dataChunkInfo.Size = interpolatedNumSamples * info.fmt.blockAlign;
+	info.header.chunkSize = 4 + (8 + sizeof(FMT)) + (8 + sizeof(DATACHUNKINFO) + info.dataChunkInfo.Size);
+	
+	initWriter(output);
+	writer->writeInfo(info);
+	
+	int cyclesOfInterpolation = (int)ceil(originalNumSamples / bufferSize);
+	if (reader->getSampleSize() == 2) {
+		dataScaler<int16_t> ds;
+		ds.setScaleRatio(sr);
+		for (int i = 0; i < cyclesOfInterpolation; i++) {
+			std::vector<char> samples = reader->getSamples(bufferSize);
+			TypedVectorAccessor<int16_t> accessor(samples);
+			std::vector<char> interpolatedSamples = ds.scaleData(accessor);
+			writer->writeSamples(interpolatedSamples);
+		}
+	}
+	else {
+		dataScaler<uint8_t> ds;
+		ds.setScaleRatio(sr);
+		for (int i = 0; i < cyclesOfInterpolation; i++) {
+			std::vector<char> samples = reader->getSamples(bufferSize);
+			TypedVectorAccessor<uint8_t> accessor(samples);
+			std::vector<char> interpolatedSamples = ds.scaleData(accessor);
+			writer->writeSamples(interpolatedSamples);
+		}
 	}
 }
 
@@ -37,8 +61,8 @@ void WAVEFileScaler::initReader(const std::string& inputfilename) {
 	}
 }
 
-void WAVEFileScaler::initWriter(const std::string& outfilename, const RIFFHEADER& header, const FMT& fmt, const DATACHUNKINFO& dci) {
-	writer = new WAVEFileWriter(outfilename, header, fmt, dci);
+void WAVEFileScaler::initWriter(const std::string& outfilename) {
+	writer = new WAVEFileWriter(outfilename);
 	if (writer == nullptr) {
 		throw std::exception("Can't allocate memory for WAVEFileWriter!");
 	}

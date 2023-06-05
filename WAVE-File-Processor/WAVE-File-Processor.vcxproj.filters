@@ -42,6 +42,9 @@
     <ClCompile Include="WAVEFormatValidate.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="TypedVectorAccessor.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WAVEFormat.h">
@@ -63,6 +66,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="WAVEFormatValidate.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="TypedVectorAccessor.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

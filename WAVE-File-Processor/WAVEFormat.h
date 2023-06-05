@@ -25,3 +25,9 @@ typedef struct {
     int32_t Id;   // 0x64617461 Ц л≥тери "data"
     int32_t Size; // == NumSamples * NumChannels * BitsPerSample/8, к≥льк≥сть байт≥в ауд≥оданих
 } DATACHUNKINFO;
+
+typedef struct {
+    RIFFHEADER header;
+    FMT fmt;
+    DATACHUNKINFO dataChunkInfo;
+} WAVEINFO;

@@ -9,18 +9,15 @@
 
 class WAVEFileReader {
 private:
-	std::string filename;
 	std::ifstream file;
-	RIFFHEADER header;
-	FMT fmt;
-	DATACHUNKINFO dataChunkInfo;
+	WAVEINFO info;
+	int readedSamples = 0;
 	void readInfo();
+	int notReadedSamples() const;
 public:
 	WAVEFileReader(const std::string&);
-	RIFFHEADER getHeader() const;
-	FMT getFMT() const;
-	DATACHUNKINFO getDataChunkInfo() const;
-	void getNextSample(char*);
 	int getSampleSize() const;
+	WAVEINFO getInfo() const;
+	std::vector<char> getSamples(const int);
 	~WAVEFileReader();
 };

@@ -14,15 +14,15 @@ WAVEFileReader::~WAVEFileReader() {
 }
 
 void WAVEFileReader::readInfo() {
-    char* headerPtr = (char*)(&header);
-    char* subch1Ptr = (char*)(&fmt);
-    char* subch2Ptr = (char*)(&dataChunkInfo);
+    char* headerPtr = (char*)(&info.header);
+    char* subch1Ptr = (char*)(&info.fmt);
+    char* subch2Ptr = (char*)(&info.dataChunkInfo);
 
     if (!file.read(headerPtr, sizeof(RIFFHEADER))) {
         throw std::exception("Error reading header");
     }
 
-    if (!WAVEFormatValidate::validateRIFFHeader(header)) {
+    if (!WAVEFormatValidate::validateRIFFHeader(info.header)) {
         throw std::exception("Invalid RIFF Header");
     }
 
@@ -30,7 +30,7 @@ void WAVEFileReader::readInfo() {
         throw std::exception("Error reading FMT");
     }
 
-    if (!WAVEFormatValidate::validateFMT(fmt)) {
+    if (!WAVEFormatValidate::validateFMT(info.fmt)) {
         throw std::exception("Invalid FMT chunk");
     }
 
@@ -38,29 +38,39 @@ void WAVEFileReader::readInfo() {
         throw std::exception("Error reading data chunk info");
     }
 
-    if (!WAVEFormatValidate::validateDataChunkInfo(dataChunkInfo)) {
+    if (!WAVEFormatValidate::validateDataChunkInfo(info.dataChunkInfo)) {
         throw std::exception("Invalid Data chunk");
     }
 }
 
-int WAVEFileReader::getSampleSize() const {
-    return fmt.bitsPerSample / 8;
+int WAVEFileReader::notReadedSamples() const {
+    return info.dataChunkInfo.Size / (info.fmt.bitsPerSample / 8) - readedSamples;
 }
 
-void WAVEFileReader::getNextSample(char* sample) {
-    if (!file.read(sample, getSampleSize())) {
+int WAVEFileReader::getSampleSize() const {
+    return info.fmt.bitsPerSample / 8;
+}
+
+std::vector<char> WAVEFileReader::getSamples(const int bufferSize) {
+    int toRead = bufferSize;
+    int notReaded = notReadedSamples();
+
+    if (notReaded < toRead) {
+        toRead = notReaded;
+    }
+
+    int toReadSize = toRead * getSampleSize();
+
+    std::vector<char> samples(toReadSize);
+    if (!file.read(samples.data(), toReadSize)) {
         throw std::exception("Can't read sample of data!");
     }
+
+    readedSamples += toRead;
+
+    return samples;
 }
 
-RIFFHEADER WAVEFileReader::getHeader() const {
-    return header;
-}
-
-FMT WAVEFileReader::getFMT() const {
-    return fmt;
-}
-
-DATACHUNKINFO WAVEFileReader::getDataChunkInfo() const {
-    return dataChunkInfo;
+WAVEINFO WAVEFileReader::getInfo() const {
+    return info;
 }

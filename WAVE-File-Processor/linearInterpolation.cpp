@@ -13,6 +13,16 @@ bool LinearInterpolation<T>::newSamplesNeeded(const double val) const {
 }
 
 template <typename T>
+bool LinearInterpolation<T>::interpolatedBefore() const {
+	return sample_n != 0;
+}
+
+template <typename T>
+T LinearInterpolation<T>::getLastSample() const {
+	return nextSample;
+}
+
+template <typename T>
 T LinearInterpolation<T>::getInterpolatedValue(const double val) const {
 	return (T)(currentSample * (1 - (val - sample_n)) + nextSample * (val - sample_n));
 }

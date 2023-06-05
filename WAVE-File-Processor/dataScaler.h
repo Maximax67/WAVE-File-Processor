@@ -1,20 +1,17 @@
 #pragma once
 
+#include <stdexcept>
+
 #include "WAVEFormat.h"
-#include "WAVEFileReader.h"
-#include "WAVEFileWriter.h"
 #include "linearInterpolation.h"
+#include "TypedVectorAccessor.h"
 
 template <typename T>
 class dataScaler {
 private:
 	LinearInterpolation<T> interpolator;
-	WAVEFileReader* reader;
-	WAVEFileWriter* writer;
-	const double scaleRatio;
-	const int originalNumSamples;
-	const int interpolatedNumSamples;
+	double scaleRatio = 1;
 public:
-	dataScaler(WAVEFileReader*, WAVEFileWriter*, const int, const int, const double);
-	void scaleData();
+	void setScaleRatio(const double);
+	std::vector<char> scaleData(const TypedVectorAccessor<T>&);
 };

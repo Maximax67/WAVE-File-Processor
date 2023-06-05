@@ -1,18 +1,18 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include <fstream>
 
 #include "WAVEFormat.h"
 
 class WAVEFileWriter {
 private:
-	std::string filename;
 	std::ofstream file;
 	int sampleSize;
-	void writeInfo(const RIFFHEADER&, const FMT&, const DATACHUNKINFO&);
 public:
-	WAVEFileWriter(const std::string&, const RIFFHEADER&, const FMT&, const DATACHUNKINFO&);
-	void writeNextSample(const char*);
+	WAVEFileWriter(const std::string&);
+	void writeInfo(const WAVEINFO&);
+	void writeSamples(std::vector<char>&);
 	~WAVEFileWriter();
 };

@@ -130,6 +130,7 @@
     <ClCompile Include="dataScaler.cpp" />
     <ClCompile Include="linearInterpolation.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="TypedVectorAccessor.cpp" />
     <ClCompile Include="utils.cpp" />
     <ClCompile Include="WAVEFileReader.cpp" />
     <ClCompile Include="WAVEFileScaler.cpp" />
@@ -140,6 +141,7 @@
   <ItemGroup>
     <ClInclude Include="dataScaler.h" />
     <ClInclude Include="linearInterpolation.h" />
+    <ClInclude Include="TypedVectorAccessor.h" />
     <ClInclude Include="utils.h" />
     <ClInclude Include="WAVEFIleScaler.h" />
     <ClInclude Include="WAVEFormat.h" />
