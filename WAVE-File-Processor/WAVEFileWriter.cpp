@@ -22,7 +22,6 @@ void WAVEFileWriter::writeSamples(std::vector<char>& samples) {
 	if (!sampleSize) {
 		throw std::exception("WAVEINFO was not written yet! You can't write samples");
 	} else if (!file.write(samples.data(), samples.size())) {
-		file.close();
 		throw std::exception("Can't write sample of data!");
 	}
 }

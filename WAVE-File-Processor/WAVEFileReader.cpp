@@ -5,8 +5,6 @@ WAVEFileReader::WAVEFileReader(const std::string& filename) {
     if (!file.is_open()) {
         throw std::exception("Error opening input file!");
     }
-
-    readInfo();
 }
 
 WAVEFileReader::~WAVEFileReader() {

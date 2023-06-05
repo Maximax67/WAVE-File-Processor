@@ -15,8 +15,10 @@ void WAVEFileScaler::scaleFile(const std::string& input, const std::string& outp
 	}
 
 	initReader(input);
-	
+
+	reader->readInfo();
 	WAVEINFO info = reader->getInfo();
+
 	int originalNumSamples = info.dataChunkInfo.Size / (info.fmt.bitsPerSample / 8);
 	int interpolatedNumSamples = (int)(originalNumSamples * sr);
 	

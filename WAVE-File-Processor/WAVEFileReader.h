@@ -12,11 +12,11 @@ private:
 	std::ifstream file;
 	WAVEINFO info;
 	int readedSamples = 0;
-	void readInfo();
 	int notReadedSamples() const;
 public:
 	WAVEFileReader(const std::string&);
 	int getSampleSize() const;
+	void readInfo();
 	WAVEINFO getInfo() const;
 	std::vector<char> getSamples(const int);
 	~WAVEFileReader();
