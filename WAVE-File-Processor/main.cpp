@@ -3,7 +3,7 @@
 
 int main(int argc, char* argv[]) {
     if (argc < 4) {
-        std::cout << "Usage: [program name].exe input.wav output.wav scaleRatio" << std::endl;
+        std::cout << "Usage: " << argv[0] << " input.wav output.wav scaleRatio" << std::endl;
         return 0;
     }
 
@@ -14,9 +14,8 @@ int main(int argc, char* argv[]) {
     if (!utils::convertToDouble(argv[3], &scaleRatio)) {
         std::cout << "Error! " << argv[3] << " is not a double number!" << std::endl;
     }
-
-    if (scaleRatio < 0.01 || scaleRatio > 100) {
-        std::cout << "Error! Scale ratio must be greater than 0.001 and less than 1000!" << std::endl;
+    else if (scaleRatio < 0.01 || scaleRatio > 100) {
+        std::cout << "Error! Scale ratio must be greater than 0.01 and less than 100!" << std::endl;
         scaleRatio = 0;
     }
 
